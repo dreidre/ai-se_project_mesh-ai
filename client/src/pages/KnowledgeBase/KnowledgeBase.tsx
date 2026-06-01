@@ -16,7 +16,6 @@ export default function KnowledgeBase() {
     useEffect(() => {
       const load = async () => {
         try {
-          throw new Error('test');
           const res = await getDocuments();
           setDocuments(res.data || []);
         } catch {

@@ -19,8 +19,8 @@
   line-height: 1.2;
   font-weight: 400;
   cursor: pointer;
-  text-decoration: underline;
   text-underline-offset: 2px;
+  text-decoration: none;
 }
 
 .upload-area__label svg {
@@ -35,8 +35,8 @@
   stroke-opacity: 1;
 }
 
-.upload-area__label span {
-  text-decoration: none;
+.upload-area__label .underline {
+  text-decoration: underline;
 }
 
 .upload-area__input {

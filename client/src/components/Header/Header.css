@@ -1,0 +1,53 @@
+/* Header bar */
+header, .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  background: #ffffff;
+}
+
+/* Brand */
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header__logo {
+  width: 98px;
+  height: 26px;
+}
+
+
+/* Navigation */
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header__button,
+.header__nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  color: #1c1c1c;
+  background: white;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+
+.header__button--active,
+.header__nav-link--active {
+  background: #9679D933;
+}
+
+.header__button:HOVER,
+.header__nav-link:HOVER {
+    background: #9679D91A;
+}
+
+
