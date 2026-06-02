@@ -99,6 +99,43 @@ export const getChat = async (
   id: string,
 ): Promise<ApiResponse<{ chat: Chat; messages: Message[] }>> => {
   await delay(700);
+
+  const messages: Message[] =
+    id === "c2"
+      ? [
+          {
+            _id: "m1",
+            chatId: "c2",
+            role: "user",
+            content: "Who are our users?",
+            createdAt: new Date().toISOString(),
+          },
+          {
+            _id: "m2",
+            chatId: "c2",
+            role: "assistant",
+            content:
+              "Our main users are product teams, marketers, and support teams who need quick answers from company knowledge.",
+            createdAt: new Date().toISOString(),
+          },
+          {
+            _id: "m3",
+            chatId: "c2",
+            role: "user",
+            content: "What do they use MeshAI for?",
+            createdAt: new Date().toISOString(),
+          },
+          {
+            _id: "m4",
+            chatId: "c2",
+            role: "assistant",
+            content:
+              "They use MeshAI to search internal documents, summarize information, and turn scattered knowledge into clear answers.",
+            createdAt: new Date().toISOString(),
+          },
+        ]
+      : [];
+
   return {
     success: true,
     data: {
@@ -108,7 +145,7 @@ export const getChat = async (
         userId: "u1",
         createdAt: new Date().toISOString(),
       },
-      messages: [],
+      messages,
     },
     error: null,
   };

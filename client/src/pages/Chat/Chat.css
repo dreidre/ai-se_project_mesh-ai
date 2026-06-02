@@ -1,0 +1,127 @@
+.chat {
+    margin-top: 22px;
+    margin-left: 20px;
+    display: flex;   
+
+}
+
+.chat__sidebar {
+    width: 220px;
+}
+.chat__main {
+    display: flex;
+    margin: 0 auto;
+    max-width: 670px;
+}
+
+.chat__new-btn {
+    background: white;
+    border-radius: 4px;
+    border: 1px solid #9679D933;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 12px;
+    width: 100%;
+    text-align: left;
+    display: inline-flex;
+    gap: 4px;
+    margin-bottom: 12px;
+
+}
+.chat__new-btn-icon {
+    font-size: 20px;
+
+    line-height: 1;
+}
+
+.chat__new-btn:hover
+{
+    background: #9679D933;
+    border: 1px solid #9679D933;
+}
+
+.chat__item {
+    background: white;
+    font-size: 14px;
+    padding: 10px 12px;
+    width: 100%;
+    text-align: left;
+    gap: 4px;
+    list-style: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.chat__item_active {
+    background: #9679D933;
+}
+
+.chat__error-title {
+    font-weight: 600;
+    font-size: 32px;
+    text-align: center;
+    color: #E36161;
+    margin: -50px 0 12px 0;
+}
+.chat__error-text {
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 20px;
+    text-align: center;
+    color: #1C1C1C;
+}
+.chat__error-button, .chat__no-messages-button {
+    border-radius: 8px;
+    border: none;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 12px 16px;
+    margin-top: 32px;
+    width: max-content;
+    display: block;
+    background: #1C1C1C;
+    color: white;
+}
+.chat__error, .chat__no-messages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 201px;
+}
+
+.chat__messages {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 0;
+  list-style: none;
+}
+
+.chat__message_user {
+  align-self: flex-end;
+  background: #1C1C1C0D;
+  color: #1C1C1C;
+  border-radius: 12px;
+  padding: 12px;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.chat__message_assistant {
+  align-self: flex-start;
+  color: #1c1c1c;
+  font-size: 16px;
+  line-height: 1;
+  max-width: 85%;
+  word-wrap: break-word;
+}
+
+.chat__no-messages-text {
+    font-weight: 600;
+    font-size: 32px;
+    text-align: center;
+    color: #1C1C1C;
+    line-height: 1;
+}
