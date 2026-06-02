@@ -1,3 +1,7 @@
+.knowledge-base {
+    max-width: 670px;
+    margin: 0 auto;
+}
 .knowledge-base__document {
     display: inline-flex;
     align-items: center;
@@ -44,8 +48,6 @@ flex-grow: 0;
 
 .knowledge-base__description {
     /* Upload Instructions */
-
-width: 670px;
 height: 21px;
 
 font-style: normal;
