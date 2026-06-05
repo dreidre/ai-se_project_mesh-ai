@@ -100,41 +100,106 @@ export const getChat = async (
 ): Promise<ApiResponse<{ chat: Chat; messages: Message[] }>> => {
   await delay(700);
 
-  const messages: Message[] =
-    id === "c2"
-      ? [
-          {
-            _id: "m1",
-            chatId: "c2",
-            role: "user",
-            content: "Who are our users?",
-            createdAt: new Date().toISOString(),
-          },
-          {
-            _id: "m2",
-            chatId: "c2",
-            role: "assistant",
-            content:
-              "Our main users are product teams, marketers, and support teams who need quick answers from company knowledge.",
-            createdAt: new Date().toISOString(),
-          },
-          {
-            _id: "m3",
-            chatId: "c2",
-            role: "user",
-            content: "What do they use MeshAI for?",
-            createdAt: new Date().toISOString(),
-          },
-          {
-            _id: "m4",
-            chatId: "c2",
-            role: "assistant",
-            content:
-              "They use MeshAI to search internal documents, summarize information, and turn scattered knowledge into clear answers.",
-            createdAt: new Date().toISOString(),
-          },
-        ]
-      : [];
+  const messagesByChatId: Record<string, Message[]> = {
+    c1: [
+      {
+        _id: "m1",
+        chatId: id,
+        role: "user",
+        content: "What is posthog, and how can I use it?",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: "m2",
+        chatId: id,
+        role: "assistant",
+        content:
+          "**PostHog** is an open-source product analytics platform.\n\nIt lets you answer questions like:\n- What do users do after signing up?\n- Where do they drop off?\n- Which feature actually brings value?\n\nTo get started:\n1. Install the PostHog SDK in your app\n2. Track events on key user actions\n3. Explore the dashboard to see behaviour over time",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: "m3",
+        chatId: id,
+        role: "user",
+        content: "Does it work with React?",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: "m4",
+        chatId: id,
+        role: "assistant",
+        content:
+          "Yes. Install the `posthog-js` package and initialise it in your app entry point. You can then call `posthog.capture()` anywhere in your components to track events.",
+        createdAt: new Date().toISOString(),
+      },
+    ],
+    c2: [
+      {
+        _id: "m5",
+        chatId: id,
+        role: "user",
+        content: "Who are our users?",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: "m6",
+        chatId: id,
+        role: "assistant",
+        content:
+          "Based on the knowledge base, our users fall into three main segments:\n\n1. **Junior developers** — recently onboarded, looking for guidance on workflows and best practices\n2. **Mid-level engineers** — actively shipping features, need quick access to internal docs and code standards\n3. **Team leads** — responsible for code reviews and team health, interested in aggregate insights\n\nThe majority of active sessions come from mid-level engineers on the web client.",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: "m7",
+        chatId: id,
+        role: "user",
+        content: "What do they struggle with most?",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: "m8",
+        chatId: id,
+        role: "assistant",
+        content:
+          "The top pain points surfaced in feedback are:\n\n- **Finding the right document** — search relevance is the most-cited friction point\n- **Onboarding speed** — new hires want faster access to context without reading everything\n- **Keeping knowledge current** — users distrust docs they suspect are out of date\n\nAddressing search quality would have the highest impact on satisfaction.",
+        createdAt: new Date().toISOString(),
+      },
+    ],
+    c3: [
+      {
+        _id: "m9",
+        chatId: id,
+        role: "user",
+        content: "I have a marketing hypothesis I'd like to test. Users who read the onboarding guide convert to paid plans at a higher rate. How should I test this?",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: "m10",
+        chatId: id,
+        role: "assistant",
+        content:
+          "Good hypothesis. Here's a straightforward way to test it:\n\n**Define your metrics**\n- **Primary:** paid conversion rate within 14 days of signup\n- **Secondary:** time-to-first-action in the product\n\n**Set up the experiment**\n1. Segment users by whether they opened the onboarding guide (track with a `guide_opened` event)\n2. Compare conversion rates between the two groups over a 30-day window\n3. Use a chi-squared test to check for statistical significance\n\n**Watch out for**\n- Selection bias — users who read docs may already be more motivated\n- Consider an A/B test that *prompts* half of new users to read the guide to get cleaner causation",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: "m11",
+        chatId: id,
+        role: "user",
+        content: "What sample size do I need?",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: "m12",
+        chatId: id,
+        role: "assistant",
+        content:
+          "For a reliable result, aim for:\n\n- **Baseline conversion rate:** ~10% (adjust if you know your actual rate)\n- **Minimum detectable effect:** 3 percentage points (i.e. 10% → 13%)\n- **Statistical power:** 80%\n- **Significance level:** 0.05\n\nThis gives you roughly **1,700 users per group**, or ~3,400 total.\n\nIf your current signup volume is low, consider widening the detectable effect or running the test longer rather than cutting it short.",
+        createdAt: new Date().toISOString(),
+      },
+    ],
+  };
+
+  const stubMessages: Message[] = messagesByChatId[id] ?? [];
 
   return {
     success: true,
@@ -145,7 +210,7 @@ export const getChat = async (
         userId: "u1",
         createdAt: new Date().toISOString(),
       },
-      messages,
+      messages: stubMessages,
     },
     error: null,
   };

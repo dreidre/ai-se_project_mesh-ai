@@ -51,3 +51,52 @@ header, .header {
 }
 
 
+
+
+
+.header__menu-btn {
+  display: none;
+  width: 24px;
+  height: 24px;
+  background-image: url('../../assets/icon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: white;
+}
+
+@media (max-width: 768px) {
+  .header {
+    justify-content: flex-start;
+    gap: 12px;
+    border-bottom: 1px solid rgb(0 0 0 / 0.1);
+  }
+
+  .header__menu-btn {
+    display: block;
+  }
+
+  .header__logo {
+    margin-left: auto;
+  }
+
+  /* Nav is hidden by default on mobile */
+  .header__nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 75%;
+    max-width: 255px;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 102;
+    display: none;
+    border-top: 1px solid rgb(0 0 0 / 0.1);
+    /* padding and gap according to Figma */
+  }
+
+  /* Shown when the menu is open */
+  .header__nav_mobile {
+    display: flex;
+  }
+}

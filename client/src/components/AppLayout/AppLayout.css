@@ -1,3 +1,20 @@
 .app-layout {
   font-family: "Work Sans", Arial, Helvetica, sans-serif;
 }
+
+
+.app-layout__backdrop {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .app-layout__backdrop {
+    display: block;
+    position: fixed;
+    top: 47px; /* adjust to match your header height */
+    inset-inline: 0;
+    bottom: 0;
+    background: rgb(0 0 0 / 0.3);
+    z-index: 99;
+  }
+}
