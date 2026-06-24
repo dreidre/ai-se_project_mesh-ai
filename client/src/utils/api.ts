@@ -1,3 +1,6 @@
+import type { CurrentUser } from "../types";
+
+const BASE_URL = "/api";
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 export type KnowledgeDoc = {
@@ -28,6 +31,62 @@ export type ApiResponse<T> = {
   data: T | null;
   error: { message: string } | null;
 };
+
+export type LoginResponse = {
+  token: string;
+  user: CurrentUser;
+};
+
+async function request<T>(path: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
+  const token = localStorage.getItem('auth-token') ?? '';
+
+  const res = await fetch(path, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      ...options.headers,
+    },
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem('auth-token');
+    // Don't force a navigation here; let callers handle unauthenticated state.
+    return { success: false, data: null, error: { message: 'Session expired' } };
+  }
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error?.message || 'Request failed');
+  }
+
+  return res.json();
+}
+
+export function loginUser(
+  email: string,
+  password: string,
+): Promise<ApiResponse<LoginResponse>> {
+  return request<LoginResponse>(`${BASE_URL}/auth/login`, {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+export function registerUser(
+  name: string,
+  email: string,
+  password: string,
+): Promise<ApiResponse<CurrentUser>> {
+  return request<CurrentUser>(`${BASE_URL}/auth/register`, {
+    method: 'POST',
+    body: JSON.stringify({ name, email, password }),
+  });
+}
+
+export function getCurrentUser(): Promise<ApiResponse<CurrentUser>> {
+  return request<CurrentUser>(`${BASE_URL}/users/me`);
+}
 
 export const getDocuments = async (): Promise<ApiResponse<KnowledgeDoc[]>> => {
   await delay(700);
@@ -145,3 +204,4 @@ export const sendMessage = async (
     error: null,
   };
 };
+

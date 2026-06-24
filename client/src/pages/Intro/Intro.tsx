@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function Intro() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   return (
       <div className="intro">
         <h1 className="intro__title">Welcome to Mesh AI <img src={intro__icon} alt="Bring all your documents into one secure AI workspace" className="intro__icon" /></h1>

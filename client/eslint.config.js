@@ -5,10 +5,12 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
+// imports
+
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -19,4 +21,13 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
-])
+  {
+    files: ["src/contexts/**/*.tsx"],
+    rules: {
+      "react-refresh/only-export-components": "off",
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
+]);
+
+
