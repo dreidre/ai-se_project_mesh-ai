@@ -1,7 +1,6 @@
 import type { CurrentUser } from "../types";
 
 const BASE_URL = "/api";
-const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 export type KnowledgeDoc = {
   _id: string;
@@ -88,120 +87,54 @@ export function getCurrentUser(): Promise<ApiResponse<CurrentUser>> {
   return request<CurrentUser>(`${BASE_URL}/users/me`);
 }
 
-export const getDocuments = async (): Promise<ApiResponse<KnowledgeDoc[]>> => {
-  await delay(700);
-  return {
-    success: true,
-    data: [
-      {
-        _id: "1",
-        title: "Code Review Guidelines",
-        fileName: "code-review-guidelines.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "2",
-        title: "API Reference",
-        fileName: "api-reference.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "3",
-        title: "Onboarding Guide",
-        fileName: "onboarding-guide.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "4",
-        title: "Code of Conduct",
-        fileName: "code_of_conduct.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-    ],
-    error: null,
-  };
+export const getDocuments = (): Promise<ApiResponse<KnowledgeDoc[]>> => {
+  return request<KnowledgeDoc[]>(`${BASE_URL}/documents`);
 };
 
 export const getChats = async (): Promise<ApiResponse<Chat[]>> => {
-  await delay(700);
-  return {
-    success: true,
-    data: [
-      {
-        _id: "c1",
-        title: "What is posthog",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "c2",
-        title: "Who are our users",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "c3",
-        title: "Marketing Hypothesis",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-    ],
-    error: null,
-  };
+  return request<Chat[]>(`${BASE_URL}/chats`);
 };
 
 export const getChat = async (
   id: string,
 ): Promise<ApiResponse<{ chat: Chat; messages: Message[] }>> => {
-  await delay(700);
-  return {
-    success: true,
-    data: {
-      chat: {
-        _id: id,
-        title: "Sample Chat",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      messages: [],
-    },
-    error: null,
-  };
+  return request<{ chat: Chat; messages: Message[] }>(`${BASE_URL}/chats/${id}`);
 };
 
-export const createChat = async (title: string): Promise<ApiResponse<Chat>> => {
-  await delay(400);
-  return {
-    success: true,
-    data: {
-      _id: Date.now().toString(),
-      title,
-      userId: "u1",
-      createdAt: new Date().toISOString(),
-    },
-    error: null,
-  };
+export const createChat = async (title: string) => {
+  return request<Chat>(`${BASE_URL}/chats`, {
+    method: 'POST',
+    body: JSON.stringify({ title }),
+  });
 };
 
 export const sendMessage = async (
   chatId: string,
   question: string,
 ): Promise<ApiResponse<Message>> => {
-  await delay(1500);
-  return {
-    success: true,
-    data: {
-      _id: Date.now().toString(),
-      chatId,
-      role: "assistant",
-      content: `This is a simulated response to: "${question}"`,
-      createdAt: new Date().toISOString(),
-    },
-    error: null,
-  };
+  return request<Message>(`${BASE_URL}/chats/${chatId}/messages`, {
+    method: 'POST',
+    body: JSON.stringify({ question }),
+  });
 };
 
+export const uploadDocument = async (file: File): Promise<ApiResponse<KnowledgeDoc>> => {
+  const token = localStorage.getItem('auth-token') ?? '';
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`${BASE_URL}/documents`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error?.message || 'Request failed');
+  }
+
+  return res.json();
+};

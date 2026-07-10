@@ -7,5 +7,5 @@ checkEslint({})
             process.exit(code);
         }
     }).catch(error => {
-        console.error(error);
+        logger.error(error);
     });

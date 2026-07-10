@@ -48,6 +48,11 @@ export default function Login() {
         values.password,
       );
 
+      if (!result.success) {
+        setStatusMessage(result.error?.message || "Login failed");
+        return;
+      }
+
       if (result.data) {
         login(result.data.token, result.data.user);
         navigate('/knowledge');

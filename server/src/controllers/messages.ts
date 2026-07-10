@@ -4,10 +4,11 @@ import Chunk from '../models/chunk.js';
 import Document from '../models/document.js';
 import Message from '../models/message.js';
 import { createEmbedding } from '../utils/embeddings.js';
+import { stripThinking } from '../utils/openai-client.js';
 import { rankBySimilarity } from '../utils/vector-search.js';
 import OpenAI from 'openai';
 
-const LLM_MODEL = 'meta-llama/Meta-Llama-3.1-8B-Instruct';
+const LLM_MODEL = 'meta-llama/Llama-3.3-70B-Instruct';
 
 let client: OpenAI;
 
@@ -84,9 +85,11 @@ export const createMessage = async (
     temperature: 0.2,
   });
 
-  const answer = response.choices[0]!.message.content ?? 'No answer returned.';
+  const answer =
+    stripThinking(response.choices[0]!.message.content ?? '') ||
+    'No answer returned.';
 
-  const userMessage = await Message.create({
+  await Message.create({
     chatId: chat._id,
     role: 'user',
     content: question,
@@ -99,7 +102,7 @@ export const createMessage = async (
 
   res.status(201).json({
     success: true,
-    data: [userMessage, assistantMessage],
+    data: assistantMessage,
     error: null,
   });
 };

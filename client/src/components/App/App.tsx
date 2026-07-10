@@ -6,16 +6,21 @@ import { Route, Routes } from "react-router-dom";
 import KnowledgeBase from "../../pages/KnowledgeBase/KnowledgeBase";
 import "./App.css"
 import Chat from "../../pages/Chat/Chat";
+import { ProtectedRoute, PublicRoute } from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   return (
     <Routes>
       <Route element={<Intro />} path="/" />
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
+      <Route element={<PublicRoute />}>
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+      </Route>
       <Route element={<AppLayout />}>
+      <Route element={<ProtectedRoute />}>
         <Route element={<KnowledgeBase />} path="/knowledge" />
         <Route element={<Chat />} path="/chat" />
+      </Route>
       </Route>
     </Routes>
   );

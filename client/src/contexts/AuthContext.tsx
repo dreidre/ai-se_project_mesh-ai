@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       })
       .catch(() => {
-        // no valid session - stay logged out
+        localStorage.removeItem('auth-token');
       })
       .finally(() => {
         setIsLoading(false);
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 
   function logout() {
-      localStorage.removeItem("auth-token");
+    localStorage.removeItem("auth-token");
     setCurrentUser(null);
     setIsAuthenticated(false);
   }

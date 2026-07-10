@@ -2,16 +2,19 @@ import "./UploadArea.css";
 
 type Props = {
   onFileSelect: (file: File) => void;
+  isUploading: boolean;
 };
 
-export default function UploadArea({ onFileSelect }: Props) {
+export default function UploadArea({ onFileSelect, isUploading }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isUploading) return;
     const file = e.target.files?.[0];
     if (file) onFileSelect(file);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    if (isUploading) return;
     const file = e.dataTransfer.files?.[0];
     if (file) onFileSelect(file);
   };
@@ -22,7 +25,7 @@ export default function UploadArea({ onFileSelect }: Props) {
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
     >
-      <label className="upload-area__label">
+      <label className="upload-area__label" aria-disabled={isUploading}>
         <svg
           width="24"
           height="24"
@@ -46,9 +49,11 @@ export default function UploadArea({ onFileSelect }: Props) {
           type="file"
           accept=".pdf"
           className="upload-area__input"
+          disabled={isUploading}
           onChange={handleChange}
         />
       </label>
+      {isUploading && <p className="upload-area__status">Uploading...</p>}
     </div>
   );
 }

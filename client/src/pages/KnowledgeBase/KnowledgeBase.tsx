@@ -4,11 +4,13 @@ import type { KnowledgeDoc } from "../../utils/api";
 import { useEffect, useState} from "react";
 import { getDocuments } from "../../utils/api.ts";
 import deleteIcon from "../../assets/delete.svg";
-
+import { uploadDocument } from "../../utils/api";
 
 
 
 export default function KnowledgeBase() {
+  
+  const [isUploading, setIsUploading] = useState(false);
     const [documents, setDocuments] = useState<KnowledgeDoc[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -28,16 +30,21 @@ export default function KnowledgeBase() {
       load();
     }, []);
 
-    const handleFileSelect = (file: File) => {
-  const newDoc: KnowledgeDoc = {
-    _id: Date.now().toString(),
-    title: file.name,
-    fileName: file.name,
-    userId: 'local',
-    createdAt: new Date().toISOString(),
-  };
-  setDocuments([newDoc, ...documents]);
-};
+    const handleFileSelect = async (file: File) => {
+      setIsUploading(true);
+      try {
+        const res = await uploadDocument(file);
+        if (res.data) {
+          const uploadedDocument = res.data;
+          setDocuments((currentDocuments) => [...currentDocuments, uploadedDocument]);
+          setError(null);
+        }
+      } catch {
+        setError('Failed to upload document.');
+      } finally {
+        setIsUploading(false);
+      }
+    };
 
 
   return <>
@@ -47,11 +54,11 @@ export default function KnowledgeBase() {
   <section className="knowledge-base__content">
     <p className="knowledge-base__description">Upload documents (PDF)</p>
 
-    <UploadArea onFileSelect={handleFileSelect}/>
+    <UploadArea onFileSelect={handleFileSelect} isUploading={isUploading} />
 
     { isLoading && (<p className="message">Loading...</p>      )    }
 
-    {!isLoading && error != null && (<p className="message error-message">Failed to load documents.</p>)}
+    {!isLoading && error != null && (<p className="message error-message">{error}</p>)}
 
     {!isLoading && error == null && documents.length === 0 && (<p className="message">No documents yet.</p>)}
 
@@ -67,8 +74,6 @@ export default function KnowledgeBase() {
           ))}
       </div>
     )}
-
-    <button className="save-button" type="button">Save</button>
   </section>
 </div>
   </>;

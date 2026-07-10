@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon --exec tsx src/index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --exec tsx src/index.ts",
     "lint": "eslint src/"
   },
   "dependencies": {
@@ -26,11 +26,14 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.2",
+    "morgan": "^1.11.0",
     "multer": "^2.1.1",
     "openai": "^6.39.0",
-    "pdf-parse": "^2.4.5"
+    "pdf-parse": "^2.4.5",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -38,6 +41,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
     "@types/multer": "^2.1.0",
     "@types/node": "^25.6.2",
     "@types/pdf-parse": "^1.1.5",

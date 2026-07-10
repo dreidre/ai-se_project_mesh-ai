@@ -1,18 +1,22 @@
 import dotenv from 'dotenv';
+import morgan from 'morgan';
+import { logger } from './utils/logger.js';
+
+
 dotenv.config();
 
 import express from 'express';
 import mongoose from 'mongoose';
 
 import router from './routes/index.js';
-import { logger } from './middleware/logger.js';
 import { errorHandler, notFoundHandler } from './middleware/error.js';
 
+const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
-app.use(logger);
-
+app.use(morgan(isProduction ? 'combined' : 'dev'));
 
 
 app.get('/health', (req, res): void => {
@@ -29,6 +33,9 @@ app.get('/test-error', () => {
 
 app.use(express.json());
 
+
+
+
 app.use(router);
 
 app.use(notFoundHandler);
@@ -37,9 +44,9 @@ app.use(errorHandler);
 mongoose
   .connect(process.env.MONGO_URI!)
   .then(() => {
-    console.log('MongoDB connected');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    logger.info('MongoDB connected');
+    app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
   })
   .catch((err) => {
-    console.error('Connection error', err);
+    logger.error('Connection error', err);
   });

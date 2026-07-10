@@ -5,6 +5,7 @@ header, .header {
   justify-content: space-between;
   padding: 10px 24px;
   background: #ffffff;
+  font-family: "Work Sans", Arial, Helvetica, sans-serif;
 }
 
 /* Brand */
@@ -27,7 +28,6 @@ header, .header {
   gap: 10px;
 }
 
-.header__button,
 .header__nav-link {
   display: inline-flex;
   align-items: center;
@@ -35,19 +35,59 @@ header, .header {
   padding: 8px 12px;
   color: #1c1c1c;
   background: white;
+  border: 0;
   border-radius: 4px;
+  cursor: pointer;
+  font-family: "Work Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
   text-decoration: none;
 }
 
+.header__user-menu {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
 
-.header__button--active,
+.header__logout-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 32px;
+  padding: 0;
+  color: #1c1c1c;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.header__logout-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.header__user {
+  color: #1c1c1c;
+  font-family: "Work Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+}
+
 .header__nav-link--active {
   background: #9679D933;
 }
 
-.header__button:HOVER,
-.header__nav-link:HOVER {
-    background: #9679D91A;
+.header__nav-link:hover {
+  background: #9679D91A;
+}
+
+.header__logout-button:hover {
+  color: #8f8f8f;
 }
 
 
